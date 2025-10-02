@@ -2,6 +2,9 @@ class_name Player
 extends CharacterBody2D
 
 
+@onready var sprite: Sprite2D = $Sprite2D
+
+
 @export_group('Movement')
 ## Maximum speed the player can move at
 @export var move_speed: float = 75.0
@@ -15,11 +18,20 @@ var _input_dir: Vector2 = Vector2.ZERO
 
 func _process(delta: float) -> void:
 	_gather_movement_input()
+	_flip_sprite()
+
 	_apply_friction(delta)
 
 #	Enables the player to move
 #	the speed at which it moves is determined by velocity
 	move_and_slide()
+
+
+func _flip_sprite() -> void:
+	if _input_dir.x < 0:
+		sprite.flip_h = true
+	elif _input_dir.x > 0:
+		sprite.flip_h = false
 
 
 ## Applies friction to the player's velocity. Linearly interpolated.

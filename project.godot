@@ -11,11 +11,16 @@ config_version=5
 [application]
 
 config/name="Learning Godot"
+run/main_scene="uid://dy7l8xy87ffis"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
+window/size/viewport_width=320
+window/size/viewport_height=180
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 
 [editor_plugins]
@@ -28,6 +33,10 @@ folder_colors={
 "res://actors/": "green",
 "res://imports/": "purple"
 }
+
+[global_group]
+
+player="Contains only the player for easier referencing"
 
 [input]
 
