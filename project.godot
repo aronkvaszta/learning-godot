@@ -38,6 +38,10 @@ folder_colors={
 
 player="Contains only the player for easier referencing"
 
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+
 [input]
 
 left={

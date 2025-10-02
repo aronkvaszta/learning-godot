@@ -8,5 +8,17 @@
 [node name="Player" parent="." instance=ExtResource("1_80nbo")]
 position = Vector2(138, 73)
 
-[node name="Enemy" parent="." instance=ExtResource("2_e2o6t")]
+[node name="Bob" parent="." instance=ExtResource("2_e2o6t")]
 position = Vector2(241, 111)
+
+[node name="Jake" parent="." instance=ExtResource("2_e2o6t")]
+position = Vector2(241, 44)
+
+[node name="John" parent="." instance=ExtResource("2_e2o6t")]
+position = Vector2(30, 122)
+
+[node name="Doe" parent="." instance=ExtResource("2_e2o6t")]
+position = Vector2(53, 36)
+
+[node name="Adam" parent="." instance=ExtResource("2_e2o6t")]
+position = Vector2(102, 149)

@@ -2,7 +2,8 @@ class_name Enemy
 extends CharacterBody2D
 
 
-@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var enemy_name: Label = $EnemyName
+@onready var sprite: Sprite2D = $Sprite2D
 var player: Player = null
 
 
@@ -13,6 +14,7 @@ var _move_dir: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	_find_player()
+	enemy_name.text = name
 
 
 func _process(_delta: float) -> void:
@@ -28,9 +30,10 @@ func _process(_delta: float) -> void:
 	velocity = _move_dir * move_speed
 	move_and_slide()
 
-
+##	Flips the enemy's sprite based on the [member player]'s x position.
 func _flip_sprite() -> void:
-	sprite_2d.flip_h = player.global_position.x < global_position.x
+#	Makes it look like the enemy is always facing towards the player.
+	sprite.flip_h = player.global_position.x < global_position.x
 
 
 ## Tries to find the player character. If it fails, this object is freed.
