@@ -15,6 +15,12 @@ extends CharacterBody2D
 ## Movement direction
 var _input_dir: Vector2 = Vector2.ZERO
 
+@export_group('Shooting')
+@export var fire_rate: float = 1.0
+@export var projectile_scene: PackedScene = null
+var _fire_timer: float = 0.0
+var _target: Enemy = null
+
 
 func _process(delta: float) -> void:
 	_gather_movement_input()
@@ -22,8 +28,11 @@ func _process(delta: float) -> void:
 
 	_apply_friction(delta)
 
-#	Enables the player to move
-#	the speed at which it moves is determined by velocity
+	_fire_timer += delta
+	if _fire_timer >= fire_rate:
+		_fire_timer = 0.0
+		shoot()
+
 	move_and_slide()
 
 
@@ -44,10 +53,8 @@ func _apply_friction(dt: float) -> void:
 
 ## Sets [member _input_dir] to whatever the WASD inputs' values are. Normalized.
 func _gather_movement_input() -> void:
-#	Resetting movement input to 0 every frame
 	_input_dir = Vector2.ZERO
 
-#	Getting input values for WASD movement
 	if Input.is_action_pressed(&'left'):
 		_input_dir.x -= 1
 	if Input.is_action_pressed(&'right'):
@@ -57,14 +64,24 @@ func _gather_movement_input() -> void:
 	if Input.is_action_pressed(&'down'):
 		_input_dir.y += 1
 
-#	Normalizing the input, so the length is always 1 unit long or 0.
 	_input_dir = _input_dir.normalized()
 
-#	↓ This is the same as the thing above
-	#_input_dir = Input.get_vector(&'left', &'right', &'up', &'down')
 
-#	↓ So is this
-	#_input_dir = Vector2(
-		#Input.get_axis(&'left', &'right'),
-		#Input.get_axis(&'up', &'down')
-	#).normalized()
+
+func shoot() -> void:
+	if not _target:
+		return
+
+	var new_projectile: Projectile = projectile_scene.instantiate()
+	new_projectile.global_position = global_position
+
+	var direction_to_target: Vector2 = (_target.global_position - global_position).normalized()
+	var rot: float = atan2(direction_to_target.y, direction_to_target.x) + PI * 0.5
+	new_projectile.rotation = rot
+
+	new_projectile.set_move_dir(direction_to_target)
+	get_tree().current_scene.call_deferred(&'add_child', new_projectile)
+
+
+func _on_detection_range_area_closest_enemy_changed(enemy: Enemy) -> void:
+	_target = enemy

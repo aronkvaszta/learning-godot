@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnqrbablkvbnn"]
+[gd_scene load_steps=7 format=3 uid="uid://dnqrbablkvbnn"]
 
 [ext_resource type="Script" uid="uid://dc0eehh24t1ol" path="res://actors/player/player.gd" id="1_ilk7j"]
 [ext_resource type="Texture2D" uid="uid://der63fguw3s3l" path="res://imports/tilemap_packed.png" id="1_nvxhs"]
+[ext_resource type="PackedScene" uid="uid://c2lv45cwchnhd" path="res://actors/projectile/projectile.tscn" id="2_lsqbn"]
 [ext_resource type="Script" uid="uid://bsk1qerhe2dey" path="res://actors/player/detection_range_area.gd" id="3_ax26v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nvxhs"]
@@ -14,6 +15,7 @@ radius = 48.0
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_ilk7j")
+projectile_scene = ExtResource("2_lsqbn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_nvxhs")
@@ -32,3 +34,5 @@ script = ExtResource("3_ax26v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRangeArea"]
 shape = SubResource("CircleShape2D_ilk7j")
+
+[connection signal="closest_enemy_changed" from="DetectionRangeArea" to="." method="_on_detection_range_area_closest_enemy_changed"]

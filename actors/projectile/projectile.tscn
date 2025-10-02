@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2lv45cwchnhd"]
+
+[ext_resource type="Script" uid="uid://5po3ry85g5d2" path="res://actors/projectile/projectile.gd" id="1_jqn3r"]
+[ext_resource type="Texture2D" uid="uid://der63fguw3s3l" path="res://imports/tilemap_packed.png" id="1_mflws"]
+[ext_resource type="PackedScene" uid="uid://cdqad6vgq41rc" path="res://utils/components/hitbox_component/hitbox_component.tscn" id="3_rchsu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y7o7c"]
+radius = 5.0
+height = 16.0
+
+[node name="Projectile" type="Node2D"]
+script = ExtResource("1_jqn3r")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_mflws")
+region_enabled = true
+region_rect = Rect2(112, 128, 16, 16)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="HitboxComponent" parent="." instance=ExtResource("3_rchsu")]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CapsuleShape2D_y7o7c")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="hit" from="HitboxComponent" to="." method="_on_hitbox_component_hit"]

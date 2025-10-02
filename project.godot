@@ -31,7 +31,8 @@ enabled=PackedStringArray("res://addons/script-ide/plugin.cfg")
 
 folder_colors={
 "res://actors/": "green",
-"res://imports/": "purple"
+"res://imports/": "purple",
+"res://utils/": "orange"
 }
 
 [global_group]

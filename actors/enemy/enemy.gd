@@ -2,7 +2,6 @@ class_name Enemy
 extends CharacterBody2D
 
 
-@onready var enemy_name: Label = $EnemyName
 @onready var sprite: Sprite2D = $Sprite2D
 var player: Player = null
 
@@ -14,7 +13,6 @@ var _move_dir: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	_find_player()
-	enemy_name.text = name
 
 
 func _process(_delta: float) -> void:
@@ -45,3 +43,7 @@ func _find_player(max_tries: int = 10) -> void:
 		tries += 1
 	if not player:
 		queue_free()
+
+
+func _on_health_component_died() -> void:
+	call_deferred(&'queue_free')

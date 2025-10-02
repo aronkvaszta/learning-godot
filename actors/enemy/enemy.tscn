@@ -1,13 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://ct5oqynwjx0ak"]
+[gd_scene load_steps=7 format=3 uid="uid://ct5oqynwjx0ak"]
 
 [ext_resource type="Texture2D" uid="uid://der63fguw3s3l" path="res://imports/tilemap_packed.png" id="1_jqx28"]
 [ext_resource type="Script" uid="uid://8xacxo8y7opa" path="res://actors/enemy/enemy.gd" id="1_r6xaq"]
+[ext_resource type="PackedScene" uid="uid://s7h23tx58iig" path="res://utils/components/health_component/health_component.tscn" id="3_hptor"]
+[ext_resource type="PackedScene" uid="uid://blu2hxcymbt0h" path="res://utils/components/hurtbox_component/hurtbox_component.tscn" id="4_ooidh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqx28"]
 radius = 6.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_r6xaq"]
-font_size = 11
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ooidh"]
+radius = 9.0
+height = 22.0
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 4
@@ -25,12 +28,16 @@ region_rect = Rect2(16, 160, 16, 16)
 position = Vector2(0, 7)
 shape = SubResource("CircleShape2D_jqx28")
 
-[node name="EnemyName" type="Label" parent="."]
-offset_left = -27.0
-offset_top = -25.0
-offset_right = 30.0
-offset_bottom = -2.0
-text = "[Name]"
-label_settings = SubResource("LabelSettings_r6xaq")
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="HealthComponent" parent="." instance=ExtResource("3_hptor")]
+max_health = 3.0
+
+[node name="HurtboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("4_ooidh")]
+collision_layer = 4
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_ooidh")
+debug_color = Color(0.6711337, 0.4643479, 0.5652703, 0.41960785)
+
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

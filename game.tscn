@@ -1,24 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://dy7l8xy87ffis"]
 
 [ext_resource type="PackedScene" uid="uid://dnqrbablkvbnn" path="res://actors/player/player.tscn" id="1_80nbo"]
-[ext_resource type="PackedScene" uid="uid://ct5oqynwjx0ak" path="res://actors/enemy/enemy.tscn" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://bsemvt6no5c5x" path="res://actors/spawner/spawner.tscn" id="2_e2o6t"]
 
 [node name="Game" type="Node"]
 
+[node name="Spawner" parent="." instance=ExtResource("2_e2o6t")]
+
 [node name="Player" parent="." instance=ExtResource("1_80nbo")]
-position = Vector2(138, 73)
 
-[node name="Bob" parent="." instance=ExtResource("2_e2o6t")]
-position = Vector2(241, 111)
-
-[node name="Jake" parent="." instance=ExtResource("2_e2o6t")]
-position = Vector2(241, 44)
-
-[node name="John" parent="." instance=ExtResource("2_e2o6t")]
-position = Vector2(30, 122)
-
-[node name="Doe" parent="." instance=ExtResource("2_e2o6t")]
-position = Vector2(53, 36)
-
-[node name="Adam" parent="." instance=ExtResource("2_e2o6t")]
-position = Vector2(102, 149)
+[node name="Camera2D" type="Camera2D" parent="Player"]
