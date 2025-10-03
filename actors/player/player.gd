@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var health_component: HealthComponent = $HealthComponent
 
 
 @export_group('Movement')
@@ -16,6 +17,7 @@ extends CharacterBody2D
 var _input_dir: Vector2 = Vector2.ZERO
 
 @export_group('Shooting')
+@export var allow_shooting: bool = true
 @export var fire_rate: float = 1.0
 @export var projectile_scene: PackedScene = null
 var _fire_timer: float = 0.0
@@ -69,7 +71,7 @@ func _gather_movement_input() -> void:
 
 
 func shoot() -> void:
-	if not _target:
+	if not _target or not allow_shooting:
 		return
 
 	var new_projectile: Projectile = projectile_scene.instantiate()
@@ -85,3 +87,11 @@ func shoot() -> void:
 
 func _on_detection_range_area_closest_enemy_changed(enemy: Enemy) -> void:
 	_target = enemy
+
+
+func _on_health_component_died() -> void:
+	get_tree().call_deferred(&'reload_current_scene')
+
+
+func _on_health_component_health_changed(_max: float, _current: float) -> void:
+	HitEffectApplier.apply_hit_effect(sprite)

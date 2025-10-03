@@ -1,12 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://dy7l8xy87ffis"]
+[gd_scene load_steps=4 format=3 uid="uid://dy7l8xy87ffis"]
 
 [ext_resource type="PackedScene" uid="uid://dnqrbablkvbnn" path="res://actors/player/player.tscn" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://bsemvt6no5c5x" path="res://actors/spawner/spawner.tscn" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://b5epjht4o2uu4" path="res://interface/player_stats/player_stats.tscn" id="3_feb5d"]
 
 [node name="Game" type="Node"]
 
-[node name="Spawner" parent="." instance=ExtResource("2_e2o6t")]
+[node name="2DScenes" type="Node2D" parent="." groups=["2DScenes"]]
 
-[node name="Player" parent="." instance=ExtResource("1_80nbo")]
+[node name="Spawner" parent="2DScenes" instance=ExtResource("2_e2o6t")]
+spawn_time = 1.75
+max_spawn_amount = 2
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Player" parent="2DScenes" instance=ExtResource("1_80nbo")]
+collision_mask = 5
+
+[node name="Camera2D" type="Camera2D" parent="2DScenes/Player"]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="PlayerStats" parent="HUD" instance=ExtResource("3_feb5d")]

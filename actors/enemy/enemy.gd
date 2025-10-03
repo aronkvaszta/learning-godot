@@ -9,13 +9,19 @@ var player: Player = null
 @export_group('Movement Settings')
 @export var move_speed: float = 50.0
 var _move_dir: Vector2 = Vector2.ZERO
+var _can_move: bool = true
 
 
 func _ready() -> void:
 	_find_player()
+	HitEffectApplier.hit_effect_applied.connect(_on_hit_applied)
+	HitEffectApplier.hit_effect_removed.connect(_on_hit_removed)
 
 
 func _process(_delta: float) -> void:
+	if not _can_move:
+		return
+
 #	Find the direction towards the player
 	_move_dir = (player.global_position - global_position).normalized()
 	_flip_sprite()
@@ -47,3 +53,21 @@ func _find_player(max_tries: int = 10) -> void:
 
 func _on_health_component_died() -> void:
 	call_deferred(&'queue_free')
+
+
+func _on_health_component_health_changed(_max: float, _current: float) -> void:
+	HitEffectApplier.apply_hit_effect(sprite)
+
+func _on_hit_applied(spr: Sprite2D) -> void:
+	if not spr == sprite:
+		return
+
+	_can_move = false
+
+
+func _on_hit_removed(spr: Sprite2D) -> void:
+	if not spr == sprite:
+		return
+
+	_can_move = true
+

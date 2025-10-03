@@ -1,15 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnqrbablkvbnn"]
+[gd_scene load_steps=10 format=3 uid="uid://dnqrbablkvbnn"]
 
 [ext_resource type="Script" uid="uid://dc0eehh24t1ol" path="res://actors/player/player.gd" id="1_ilk7j"]
 [ext_resource type="Texture2D" uid="uid://der63fguw3s3l" path="res://imports/tilemap_packed.png" id="1_nvxhs"]
 [ext_resource type="PackedScene" uid="uid://c2lv45cwchnhd" path="res://actors/projectile/projectile.tscn" id="2_lsqbn"]
 [ext_resource type="Script" uid="uid://bsk1qerhe2dey" path="res://actors/player/detection_range_area.gd" id="3_ax26v"]
+[ext_resource type="PackedScene" uid="uid://s7h23tx58iig" path="res://utils/components/health_component/health_component.tscn" id="5_6p1w3"]
+[ext_resource type="PackedScene" uid="uid://blu2hxcymbt0h" path="res://utils/components/hurtbox_component/hurtbox_component.tscn" id="6_15y17"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nvxhs"]
 radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ilk7j"]
 radius = 48.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_15y17"]
+size = Vector2(12, 15)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
@@ -35,4 +40,19 @@ script = ExtResource("3_ax26v")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRangeArea"]
 shape = SubResource("CircleShape2D_ilk7j")
 
+[node name="HealthComponent" parent="." instance=ExtResource("5_6p1w3")]
+
+[node name="HurtboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("6_15y17")]
+collision_layer = 2
+health_component = NodePath("../HealthComponent")
+allow_continuous_damage = true
+damage_cooldown = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_15y17")
+debug_color = Color(0.68777287, 0.4565404, 0.550772, 0.41960785)
+
 [connection signal="closest_enemy_changed" from="DetectionRangeArea" to="." method="_on_detection_range_area_closest_enemy_changed"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="health_changed" from="HealthComponent" to="." method="_on_health_component_health_changed"]

@@ -7,9 +7,8 @@ var _current_health: float = 0.0 :
 	set(value):
 		var previous: float = _current_health
 		_current_health = value
-		if _current_health != previous:
+		if _current_health != previous and previous != 0.0:
 			health_changed.emit(max_health, _current_health)
-
 
 signal health_changed(max: float, current: float)
 signal died()

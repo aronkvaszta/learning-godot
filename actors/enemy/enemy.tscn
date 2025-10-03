@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://ct5oqynwjx0ak"]
+[gd_scene load_steps=9 format=3 uid="uid://ct5oqynwjx0ak"]
 
 [ext_resource type="Texture2D" uid="uid://der63fguw3s3l" path="res://imports/tilemap_packed.png" id="1_jqx28"]
 [ext_resource type="Script" uid="uid://8xacxo8y7opa" path="res://actors/enemy/enemy.gd" id="1_r6xaq"]
 [ext_resource type="PackedScene" uid="uid://s7h23tx58iig" path="res://utils/components/health_component/health_component.tscn" id="3_hptor"]
 [ext_resource type="PackedScene" uid="uid://blu2hxcymbt0h" path="res://utils/components/hurtbox_component/hurtbox_component.tscn" id="4_ooidh"]
+[ext_resource type="PackedScene" uid="uid://cdqad6vgq41rc" path="res://utils/components/hitbox_component/hitbox_component.tscn" id="5_bnhc7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqx28"]
 radius = 6.0
@@ -11,6 +12,9 @@ radius = 6.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ooidh"]
 radius = 9.0
 height = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u81vx"]
+size = Vector2(12, 13)
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 4
@@ -40,4 +44,12 @@ position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_ooidh")
 debug_color = Color(0.6711337, 0.4643479, 0.5652703, 0.41960785)
 
+[node name="HitboxComponent" parent="." instance=ExtResource("5_bnhc7")]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_u81vx")
+
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="health_changed" from="HealthComponent" to="." method="_on_health_component_health_changed"]

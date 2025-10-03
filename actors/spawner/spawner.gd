@@ -12,9 +12,12 @@ var _timer: float = 0.0
 @export var spawn_distance: float = 100.0
 
 var player: Player = null
+var scene_parent: Node2D = null
+
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(&'player')
+	scene_parent = get_tree().get_first_node_in_group(&'2DScenes')
 
 
 func _process(delta: float) -> void:
@@ -35,4 +38,4 @@ func spawn_enemies() -> void:
 		).normalized() * spawn_distance
 
 		new_enemy.global_position = spawn_pos
-		get_tree().current_scene.add_child(new_enemy)
+		scene_parent.call_deferred(&'add_child', new_enemy)
